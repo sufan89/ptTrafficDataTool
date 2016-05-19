@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E1585B2C-9D94-4408-BB91-C4401AECD39E}</ProjectGuid>
+    <ProjectGuid>{3DC530F5-D916-4FE7-9182-BDAA0613F46E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ptLogManager</RootNamespace>
-    <AssemblyName>ptLogManager</AssemblyName>
+    <RootNamespace>ptDbBase</RootNamespace>
+    <AssemblyName>ptDbBase</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -40,10 +40,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Log\LogManager.cs" />
+    <Compile Include="DataBaseImpl\OdbcProvider.cs" />
+    <Compile Include="DataBaseImpl\SqlServerProvider.cs" />
+    <Compile Include="Interface\IptBaseDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ptDbBaseFactory.cs" />
+    <Compile Include="ptDbConnStringProvider.cs" />
+    <Compile Include="ptServerXml.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ptLogManager\ptLogManager.csproj">
+      <Project>{E1585B2C-9D94-4408-BB91-C4401AECD39E}</Project>
+      <Name>ptLogManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
