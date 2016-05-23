@@ -17,7 +17,9 @@ namespace ptDbBase
        /// </summary>
        private static string currentDbType = DatabaseType.Access;
 
-       static ptDbBaseFactory()
+       private static DbConnectstring _DbConnect = null;
+
+       static void ptDbBaseFactory()
         {
             InitializeDefault();
 
@@ -32,6 +34,7 @@ namespace ptDbBase
            {
                currentDbType = xml.DefaultDbConn.DbTypeString;
                _connstring = xml.DefaultDbConn.ConnectString;
+               _DbConnect = xml.DefaultDbConn;
            }
            LogManager.WriteLog(DateTime.Now.ToString());
        }
@@ -44,26 +47,103 @@ namespace ptDbBase
            switch (currentDbType)
            {
                case DatabaseType.Access:
-                   return GetNewSqlServer();
+                   return GetNewOdbcServer();
                case DatabaseType.ArcSDE:
-                   return GetNewOracleServer();
+                   return GetNewSdeServer();
                case DatabaseType.Oracle:
-                   return;
+                   return GetNewOracleServer();
                case DatabaseType.Sqlite:
-                   return;
+                   return GetNewSqliteServer();
                case DatabaseType.SqlServer:
-                   break;
+                   return GetNewSqlServer();
                default:
                    return GetNewSqlServer();
            }
        }
+       public static IptBaseDb GetNewDbServer(string dbtype, string connString)
+       {
+           if (string.IsNullOrEmpty(dbtype))
+           {
+               switch (dbtype)
+               {
+                   case DatabaseType.Access:
+                       return GetNewOdbcServer(connString);
+                   case DatabaseType.ArcSDE:
+                       return GetNewSdeServer(connString);
+                   case DatabaseType.Oracle:
+                       return GetNewOracleServer(connString);
+                   case DatabaseType.Sqlite:
+                       return GetNewSqliteServer(connString);
+                   case DatabaseType.SqlServer:
+                       return GetNewSqlServer(connString);
+                   default:
+                       return GetNewOdbcServer(connString);
+               }
+           }
+           else
+           {
+               return GetNewDbServer();
+           }
+       }
+       /// <summary>
+       /// 创建SQLServer连接对象
+       /// </summary>
+       /// <returns></returns>
        private static IptBaseDb GetNewSqlServer()
        {
            return new SqlServerProvider();
        }
+       private static IptBaseDb GetNewSqlServer(string connString)
+       {
+           return new SqlServerProvider(connString);
+       }
+       /// <summary>
+       /// 新建MDB数据库连接对象
+       /// </summary>
+       /// <returns></returns>
        private static IptBaseDb GetNewOdbcServer()
        {
            return new OdbcProvider();
+       }
+       private static IptBaseDb GetNewOdbcServer(string connString)
+       {
+           return new OdbcProvider(connString);
+       }
+       /// <summary>
+       /// 新建Oracle数据库连接对象
+       /// </summary>
+       /// <returns></returns>
+       private static IptBaseDb GetNewOracleServer()
+       {
+           return new OracleServerProvider();
+       }
+       private static IptBaseDb GetNewOracleServer(string connString)
+       {
+           return new OracleServerProvider(connString);
+       }
+       /// <summary>
+       /// 新建Sqlite数据库连接对象
+       /// </summary>
+       /// <returns></returns>
+       private static IptBaseDb GetNewSqliteServer()
+       {
+           return new SqliteProvider();
+       }
+       private static IptBaseDb GetNewSqliteServer(string connString)
+       {
+           return new SqliteProvider(connString);
+       }
+       /// <summary>
+       /// 新建SDE连接对象
+       /// </summary>
+       /// <returns></returns>
+       private static IptBaseDb GetNewSdeServer()
+       {
+           return new SdeServerProvider();
+       }
+       private static IptBaseDb GetNewSdeServer(string connString)
+       {
+           return new SdeServerProvider(connString);
        }
 
     }

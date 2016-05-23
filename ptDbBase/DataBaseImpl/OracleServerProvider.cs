@@ -3,38 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using System.Data.OleDb;
-using System.IO;
 
 namespace ptDbBase
 {
-   public class OdbcProvider:IptBaseDb
+    class OracleServerProvider:IptBaseDb
     {
-       public OdbcProvider(string connString)
-       {
-           CommandTimeout = 300;
-           m_DbConn = new OleDbConnection(connString);
-       }
-       public OdbcProvider()
-       {
+        public OracleServerProvider(string connString)
+        {
  
-       }
-       public OdbcProvider()
-       {
-           CommandTimeout = 300;
-       }
-       private  OleDbConnection m_DbConn = null;
+        }
+        public OracleServerProvider()
+        {
+ 
+        }
+        int IptBaseDb.CommandTimeout
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-       public int CommandTimeout
-       {
-           get;
-           set;
-       }
-
-       IDbConnection IptBaseDb.ConnectionObject
-       {
-           get;
-       }
+        IDbConnection IptBaseDb.ConnectionObject
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         bool IptBaseDb.TestConnection(ref string msg)
         {

@@ -10,35 +10,6 @@ namespace ptDbBase
    public class ptDbConnStringProvider
     {
         #region 设置数据库连接字符串
-
-
-        /// <summary>
-        /// 设置SQLCE数据库连接字符串
-        /// </summary>
-        /// <param name="databaseName"></param>
-        /// <param name="databasePwd"></param>
-        public static string GetSqlCeConnetString(string databaseName, string databasePwd)
-        {
-            if (string.IsNullOrEmpty(databasePwd))
-            {
-                return "Data Source=" +
-                        string.Format(@"{0}\{1}",
-                                      Path.GetDirectoryName(
-                                          Assembly.GetExecutingAssembly().GetName().CodeBase),
-                                      databaseName)
-                    ;
-            }
-            else
-            {
-                return "Data Source=" +
-                       string.Format(@"{0}\{1};password={2}",
-                                     Path.GetDirectoryName(
-                                         Assembly.GetExecutingAssembly().GetName().CodeBase),
-                                     databaseName,
-                                     databasePwd)
-                    ;
-            }
-        }
         /// <summary>
         /// 设置Oracle数据库连接字符串
         /// </summary>
@@ -94,15 +65,32 @@ namespace ptDbBase
        /// <returns></returns>
         public static string GetOdbcConnectString(string mdbFileName,string userPwd="")
         {
-            if (string.IsNullOrEmpty(userPwd))
+            if (File.Exists(mdbFileName))
             {
-                return string.Format("provider=Microsoft.Jet.OLEDB.4.0;Data Source={0}", mdbFileName);
+                if (string.IsNullOrEmpty(userPwd))
+                {
+
+                    return string.Format("provider=Microsoft.Jet.OLEDB.4.0;Data Source={0}", mdbFileName);
+
+                }
+                else
+                {
+                    return string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Persist Security Info=True;Jet OLEDB:Database password={1}",
+                        mdbFileName, userPwd);
+                }
             }
             else
             {
-                return string.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};Persist Security Info=True;Jet OLEDB:Database password={1}",
-                    mdbFileName, userPwd);
+                return string.Empty;
             }
+        }
+       /// <summary>
+       /// 获取Sqlite数据库连接
+       /// </summary>
+       /// <returns></returns>
+        public static string GetSqliteConnectString()
+        {
+            return string.Empty;
         }
         #endregion 
     }

@@ -68,7 +68,7 @@ namespace ptDbBase
             catch (Exception ex)
             {
                 LogManager.WriteLog("读取配置文件出错", ex);
-                throw;
+                throw new Exception("读取配置文件出错"); ;
             }
         }
         /// <summary>
@@ -205,15 +205,15 @@ namespace ptDbBase
                     case DatabaseType.Access:
                         return ptDbConnStringProvider.GetOdbcConnectString(ServerName,DbUserPwd);
                     case DatabaseType.ArcSDE:
-                        return "";
+                        return string.Empty;
                     case DatabaseType.Oracle:
-                        return "";
+                        return ptDbConnStringProvider.GetOracleConnectString(ServerName, DatabaseName, DbUserName, DbUserPwd);
                     case DatabaseType.Sqlite:
-                        return "";
+                        return string.Empty;
                     case DatabaseType.SqlServer:
-                        return "";
+                        return ptDbConnStringProvider.GetSqlServerConnectString(ServerName,DatabaseName,DbUserName,DbUserPwd,false);
                     default:
-                        return "";
+                        return string.Empty;
 
                 }
             }

@@ -66,7 +66,7 @@ namespace ptTrafficDataTool
         public PtDataProcessingToolBar()
         {
             //这里可以考虑使用配置文件进行动态加载
-            ptRoadCodeConfig.FilePathEntity.m_DbConfigFile = System.IO.Path.GetDirectoryName(GetType().Assembly.Location) + "\\Config\\ptConfig.mdb";
+            ptDbBase.ptPathManag.toolStartPath = System.IO.Path.GetDirectoryName(GetType().Assembly.Location);
             AddItem("{5471b940-251d-4952-8911-a426f646e598}");
         }
 

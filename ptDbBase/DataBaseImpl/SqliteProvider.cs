@@ -2,39 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data;
-using System.Data.OleDb;
-using System.IO;
 
 namespace ptDbBase
 {
-   public class OdbcProvider:IptBaseDb
+    class SqliteProvider:IptBaseDb
     {
-       public OdbcProvider(string connString)
-       {
-           CommandTimeout = 300;
-           m_DbConn = new OleDbConnection(connString);
-       }
-       public OdbcProvider()
-       {
+        public SqliteProvider(string connString)
+        {
  
-       }
-       public OdbcProvider()
-       {
-           CommandTimeout = 300;
-       }
-       private  OleDbConnection m_DbConn = null;
+        }
+        public SqliteProvider()
+        {
+ 
+        }
+        int IptBaseDb.CommandTimeout
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-       public int CommandTimeout
-       {
-           get;
-           set;
-       }
-
-       IDbConnection IptBaseDb.ConnectionObject
-       {
-           get;
-       }
+        System.Data.IDbConnection IptBaseDb.ConnectionObject
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         bool IptBaseDb.TestConnection(ref string msg)
         {
@@ -56,22 +52,22 @@ namespace ptDbBase
             throw new NotImplementedException();
         }
 
-        void IptBaseDb.CreateParam(IDbCommand cmd, DataTable dtParam, DataRow rowValue)
+        void IptBaseDb.CreateParam(System.Data.IDbCommand cmd, System.Data.DataTable dtParam, System.Data.DataRow rowValue)
         {
             throw new NotImplementedException();
         }
 
-        void IptBaseDb.CreateParam(IDbCommand cmd, string paramName, object paramValue)
+        void IptBaseDb.CreateParam(System.Data.IDbCommand cmd, string paramName, object paramValue)
         {
             throw new NotImplementedException();
         }
 
-        IDbDataParameter IptBaseDb.CreateParam(string paramName, object paramValue)
+        System.Data.IDbDataParameter IptBaseDb.CreateParam(string paramName, object paramValue)
         {
             throw new NotImplementedException();
         }
 
-        IDbDataParameter IptBaseDb.CreateParam(string paramName, object paramValue, ParameterDirection paraDirect)
+        System.Data.IDbDataParameter IptBaseDb.CreateParam(string paramName, object paramValue, System.Data.ParameterDirection paraDirect)
         {
             throw new NotImplementedException();
         }
@@ -131,22 +127,22 @@ namespace ptDbBase
             throw new NotImplementedException();
         }
 
-        DataTable IptBaseDb.ExecuteTable(string sqlCommand)
+        System.Data.DataTable IptBaseDb.ExecuteTable(string sqlCommand)
         {
             throw new NotImplementedException();
         }
 
-        DataTable IptBaseDb.ExecuteTable(string sqlCommand, string tableName)
+        System.Data.DataTable IptBaseDb.ExecuteTable(string sqlCommand, string tableName)
         {
             throw new NotImplementedException();
         }
 
-        DataTable IptBaseDb.ExecuteTableS(string storedProcedureName)
+        System.Data.DataTable IptBaseDb.ExecuteTableS(string storedProcedureName)
         {
             throw new NotImplementedException();
         }
 
-        DataTable IptBaseDb.ExecuteTableS(string storedProcedureName, string tableName)
+        System.Data.DataTable IptBaseDb.ExecuteTableS(string storedProcedureName, string tableName)
         {
             throw new NotImplementedException();
         }
@@ -156,12 +152,12 @@ namespace ptDbBase
             throw new NotImplementedException();
         }
 
-        DataSet IptBaseDb.ExecuteDataSet(bool isStoredProcudure, string commandText)
+        System.Data.DataSet IptBaseDb.ExecuteDataSet(bool isStoredProcudure, string commandText)
         {
             throw new NotImplementedException();
         }
 
-        DataSet IptBaseDb.ExecuteDataSet(string commandText)
+        System.Data.DataSet IptBaseDb.ExecuteDataSet(string commandText)
         {
             throw new NotImplementedException();
         }
@@ -171,17 +167,17 @@ namespace ptDbBase
             throw new NotImplementedException();
         }
 
-        void IptBaseDb.BulkCopyTable(string sqlInsert, IDbConnection connSelect, string sqlSelect)
+        void IptBaseDb.BulkCopyTable(string sqlInsert, System.Data.IDbConnection connSelect, string sqlSelect)
         {
             throw new NotImplementedException();
         }
 
-        void IptBaseDb.BulkCopy(DataTable dt)
+        void IptBaseDb.BulkCopy(System.Data.DataTable dt)
         {
             throw new NotImplementedException();
         }
 
-        void IptBaseDb.BulkCopy(DataTable dt, string deleteSql, string[] primaryKeys)
+        void IptBaseDb.BulkCopy(System.Data.DataTable dt, string deleteSql, string[] primaryKeys)
         {
             throw new NotImplementedException();
         }
