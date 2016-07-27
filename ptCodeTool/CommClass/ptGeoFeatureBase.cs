@@ -76,6 +76,38 @@ namespace ptCodeTool
 
         }
         /// <summary>
+        /// 获取所有指定条件的要素
+        /// </summary>
+        /// <param name="pRoadFeatureClass"></param>
+        /// <param name="pRegionFeature"></param>
+        /// <returns></returns>
+        public static IList<IFeature> GetFeatures(IFeatureClass pRoadFeatureClass, string StrWhere = "")
+        {
+            IList<IFeature> newList = new List<IFeature>();
+            try
+            {
+                if (pRoadFeatureClass.ShapeType != esriGeometryType.esriGeometryPolyline) return newList;
+                IQueryFilter pFiler = new QueryFilterClass();
+                if (!string.IsNullOrEmpty(StrWhere))
+                {
+                    pFiler.WhereClause = StrWhere;
+                }
+                IFeatureCursor pCursor = pRoadFeatureClass.Search(pFiler, false);
+                IFeature pFeature = pCursor.NextFeature();
+                while (pFeature != null)
+                {
+                  newList.Add(pFeature);
+                  pFeature = pCursor.NextFeature();
+                }
+                return newList;
+            }
+            catch (Exception ex)
+            {
+                return newList;
+            }
+
+        }
+        /// <summary>
         /// 获取线起点
         /// </summary>
         /// <param name="pLine"></param>

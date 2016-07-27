@@ -83,6 +83,12 @@
     <Compile Include="MdbConfig\MdbConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ptDbBase\ptDbBase.csproj">
+      <Project>{3DC530F5-D916-4FE7-9182-BDAA0613F46E}</Project>
+      <Name>ptDbBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

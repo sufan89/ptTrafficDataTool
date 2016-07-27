@@ -99,10 +99,10 @@ namespace ptCodeTool
                 MessageBox.Show("请选择编码道路");
                 return;
             }
-            if (cbRegion.SelectedIndex < 0)
-            {
-                MessageBox.Show("请选择行政区图层");
-            }
+            //if (cbRegion.SelectedIndex < 0)
+            //{
+            //    MessageBox.Show("请选择行政区图层");
+            //}
             if (m_MainMap == null && m_MainMap.LayerCount == 0)
             {
                 MessageBox.Show("请先加载编码图层");
@@ -111,20 +111,20 @@ namespace ptCodeTool
             IFeatureLayer pRoadLayer=null;
             IFeatureLayer pRegionLayer=null;
             string strRoadLayerName = cbRoad.SelectedItem.ToString();
-            string strRegionLayerName =cbRegion.SelectedItem.ToString();
+            //string strRegionLayerName =cbRegion.SelectedItem.ToString();
             for (int i = 0; i < m_MainMap.LayerCount; i++)
             {
                 if (m_MainMap.get_Layer(i).Name == strRoadLayerName)
                 {
                     pRoadLayer = m_MainMap.get_Layer(i) as IFeatureLayer;
                 }
-                if (m_MainMap.get_Layer(i).Name == strRegionLayerName)
-                {
-                    pRegionLayer = m_MainMap.get_Layer(i) as IFeatureLayer;
-                }
+                //if (m_MainMap.get_Layer(i).Name == strRegionLayerName)
+                //{
+                //    pRegionLayer = m_MainMap.get_Layer(i) as IFeatureLayer;
+                //}
             }
             IRoadCode DoRoadCode = new RoadCode();
-            DoRoadCode.Coding(pRoadLayer,pRegionLayer);
+            DoRoadCode.Coding(pRoadLayer);
             MessageBox.Show("编码完成!");
             
         }

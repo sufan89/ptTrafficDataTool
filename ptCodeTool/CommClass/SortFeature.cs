@@ -30,7 +30,7 @@ namespace ptCodeTool
        /// </summary>
        public void Sort()
        {
-           if (SortFeatures == null && SortFeatures.Count == 0) return;
+           if (SortFeatures == null ||SortFeatures.Count == 0) return;
            IList<RoadFeature> AllStartPoint = getStartPoint(SortFeatures);
            int i, j; //交换标志 
            RoadFeature temp;
@@ -40,12 +40,19 @@ namespace ptCodeTool
                exchange = false; //本趟排序开始前，交换标志应为假
                for (j = AllStartPoint.Count - 2; j >= i; j--)
                {
-                   if (AllStartPoint[j + 1].m_StartPoint.X < AllStartPoint[j].m_StartPoint.X && AllStartPoint[j + 1].m_StartPoint.Y < AllStartPoint[j].m_StartPoint.Y)　//交换条件
+                   try
                    {
-                       temp = AllStartPoint[j + 1];
-                       AllStartPoint[j + 1] = AllStartPoint[j];
-                       AllStartPoint[j] = temp;
-                       exchange = true; //发生了交换，故将交换标志置为真 
+                       if (AllStartPoint[j + 1].m_StartPoint.X < AllStartPoint[j].m_StartPoint.X && AllStartPoint[j + 1].m_StartPoint.Y < AllStartPoint[j].m_StartPoint.Y)　//交换条件
+                       {
+                           temp = AllStartPoint[j + 1];
+                           AllStartPoint[j + 1] = AllStartPoint[j];
+                           AllStartPoint[j] = temp;
+                           exchange = true; //发生了交换，故将交换标志置为真 
+                       }
+                   }
+                   catch (Exception ex)
+                   {
+                       
                    }
                }
                if (!exchange) //本趟排序未发生交换，提前终止算法 
@@ -69,6 +76,7 @@ namespace ptCodeTool
            {
                IPoint pStartPoint = ptGeoFeatureBase.GetStartPoint(pFeatures[i].ShapeCopy as IPolyline);
                RoadFeature pRoadLine = new RoadFeature(pStartPoint, pFeatures[i]);
+               if(!pFeatures[i].Shape.IsEmpty)
                newList.Add(pRoadLine);
            }
           return newList;

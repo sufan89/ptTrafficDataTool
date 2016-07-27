@@ -19,7 +19,7 @@ namespace ptDbBase
 
        private static DbConnectstring _DbConnect = null;
 
-       static void ptDbBaseFactory()
+       public  ptDbBaseFactory()
         {
             InitializeDefault();
 

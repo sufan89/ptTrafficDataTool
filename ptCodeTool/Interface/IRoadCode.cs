@@ -9,5 +9,6 @@ namespace ptCodeTool
     interface IRoadCode
     {
         void Coding(IFeatureLayer pRoadLayer,IFeatureLayer pRegionLayer);
+        void Coding(IFeatureLayer pRoadLayer);
     }
 }

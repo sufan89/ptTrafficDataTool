@@ -12,6 +12,6 @@ namespace ptRoadCodeConfig
        /// <summary>
        /// 编码配置文件路径
        /// </summary>
-       public static string m_DbConfigFile = Application.StartupPath + "\\Config\\ptConfig.mdb";
+       public static string m_DbConfigFile = ptDbBase.ptPathManag.toolStartPath + "\\Config\\ptConfig.mdb";
     }
 }

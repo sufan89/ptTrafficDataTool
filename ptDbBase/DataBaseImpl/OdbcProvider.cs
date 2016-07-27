@@ -17,10 +17,6 @@ namespace ptDbBase
        }
        public OdbcProvider()
        {
- 
-       }
-       public OdbcProvider()
-       {
            CommandTimeout = 300;
        }
        private  OleDbConnection m_DbConn = null;
@@ -30,10 +26,11 @@ namespace ptDbBase
            get;
            set;
        }
+       private IDbConnection odbcConnection;
 
        IDbConnection IptBaseDb.ConnectionObject
        {
-           get;
+           get { return odbcConnection; }
        }
 
         bool IptBaseDb.TestConnection(ref string msg)

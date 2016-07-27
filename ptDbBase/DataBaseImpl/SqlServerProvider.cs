@@ -26,10 +26,11 @@ namespace ptDbBase
             get;
             set;
         }
+        private IDbConnection sqlConnection;
 
         public IDbConnection ConnectionObject
         {
-            get;
+            get { return sqlConnection; }
         }
 
         bool IptBaseDb.TestConnection(ref string msg)

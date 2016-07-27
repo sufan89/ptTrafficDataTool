@@ -163,6 +163,10 @@
       <Project>{072B76AC-C7DA-49C1-B684-0A55EACB83A9}</Project>
       <Name>ptCodeTool</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ptDbBase\ptDbBase.csproj">
+      <Project>{3DC530F5-D916-4FE7-9182-BDAA0613F46E}</Project>
+      <Name>ptDbBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ptRoadCodeConfig\ptRoadCodeConfig.csproj">
       <Project>{FA3BEBB0-DA0B-40EA-BF00-1035BF65809F}</Project>
       <Name>ptRoadCodeConfig</Name>
