@@ -34,7 +34,19 @@ namespace ptCodeTool
         /// <param name="e"></param>
         private void btnDoCoding_Click(object sender, EventArgs e)
         {
+            if (m_MainMap == null)
+            {
 
+            }
+            switch (m_RoadCodeType)
+            {
+                case CodeType.SzRoadCode:
+                    break;
+                case CodeType.FsRoadCode:
+                    break;
+                case CodeType.FsFacilityCode:
+                    break;
+            }
         }
         /// <summary>
         /// 关闭按钮
@@ -54,7 +66,10 @@ namespace ptCodeTool
         {
 
         }
+        private void RefreshLog(string Strmessage)
+        {
 
+        }
         #region 设置编码类型
         private void rbSzRoadCode_CheckedChanged(object sender, EventArgs e)
         {
