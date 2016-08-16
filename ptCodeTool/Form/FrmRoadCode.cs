@@ -15,7 +15,7 @@ namespace ptCodeTool
     public partial class FrmRoadCode : Form
     {
         public FrmRoadCode(IMap pMap)
-        {
+        { 
             InitializeComponent();
             m_MainMap = pMap;
         }

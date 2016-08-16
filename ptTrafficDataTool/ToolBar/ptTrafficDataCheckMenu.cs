@@ -5,15 +5,15 @@ using System.Runtime.InteropServices;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ADF.BaseClasses;
 
-namespace ptTrafficDataTool
+namespace ptTrafficDataTool.ToolBar
 {
     /// <summary>
-    /// Summary description for PtDataProcessingToolBar.
+    /// Summary description for ptTrafficDataCheckMenu.
     /// </summary>
-    [Guid("61eda296-c939-4d99-95e3-f13e52c70dcb")]
+    [Guid("d6847946-3685-48a3-8904-889f300e0067")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("ptTrafficDataTool.ToolBar.PtDataProcessingToolBar")]
-    public sealed class PtDataProcessingToolBar : BaseToolbar
+    [ProgId("ptTrafficDataTool.ToolBar.ptTrafficDataCheckMenu")]
+    public sealed class ptTrafficDataCheckMenu : BaseMenu
     {
         #region COM Registration Function(s)
         [ComRegisterFunction()]
@@ -63,12 +63,15 @@ namespace ptTrafficDataTool
         #endregion
         #endregion
 
-        public PtDataProcessingToolBar()
+        public ptTrafficDataCheckMenu()
         {
-            //这里可以考虑使用配置文件进行动态加载
-            ptDbBase.ptPathManag.toolStartPath = System.IO.Path.GetDirectoryName(GetType().Assembly.Location);
-            AddItem("{5471b940-251d-4952-8911-a426f646e598}");
-            AddItem("{d6847946-3685-48a3-8904-889f300e0067}");
+            //
+            // TODO: Define your menu here by adding items
+            //
+            //AddItem("esriArcMapUI.ZoomInFixedCommand");
+            //BeginGroup(); //Separator
+            //AddItem("{FBF8C3FB-0480-11D2-8D21-080009EE4E51}", 1); //undo command
+            //AddItem(new Guid("FBF8C3FB-0480-11D2-8D21-080009EE4E51"), 2); //redo command
         }
 
         public override string Caption
@@ -76,7 +79,7 @@ namespace ptTrafficDataTool
             get
             {
                 //TODO: Replace bar caption
-                return "数据处理工具";
+                return "数据检查";
             }
         }
         public override string Name
@@ -84,7 +87,7 @@ namespace ptTrafficDataTool
             get
             {
                 //TODO: Replace bar ID
-                return "PtDataProcessingToolBar";
+                return "ptTrafficDataCheckMenu";
             }
         }
     }

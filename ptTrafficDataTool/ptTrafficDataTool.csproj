@@ -127,6 +127,7 @@
   <ItemGroup>
     <Compile Include="Command\CmdRoadCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToolBar\ptTrafficDataCheckMenu.cs" />
     <Compile Include="ToolBar\ptTrafficDataCodeMenu.cs" />
     <Compile Include="ToolBar\PtDataProcessingToolBar.cs" />
   </ItemGroup>

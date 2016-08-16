@@ -98,6 +98,12 @@
     <Compile Include="CommClass\ptGeoFeatureBase.cs" />
     <Compile Include="CommClass\SortFeature.cs" />
     <Compile Include="CommClass\XmlDoc.cs" />
+    <Compile Include="Form\FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FrmRoadCode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +115,9 @@
     <Compile Include="RoadCode\RoadCode.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Form\FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\FrmRoadCode.resx">
       <DependentUpon>FrmRoadCode.cs</DependentUpon>
     </EmbeddedResource>
