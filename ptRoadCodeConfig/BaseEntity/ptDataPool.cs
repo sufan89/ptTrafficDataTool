@@ -9,7 +9,9 @@ namespace ptRoadCodeConfig
    public class ptDataPool
     {
        private IConfig pConfig = new MdbConfig();
-       
+       /// <summary>
+       /// 区域信息
+       /// </summary>
        private DataTable m_RegionDt = null;
        private Dictionary<string, string> m_DicRegionCode;
        public Dictionary<string, string> DicRegionCode
@@ -34,13 +36,37 @@ namespace ptRoadCodeConfig
                return m_DicRegionCode;
            }
        }
-
+       /// <summary>
+       /// 模型表
+       /// </summary>
        private DataTable m_ModelDt = null;
        public DataTable ModelDt
        {
            get {
                m_ModelDt = pConfig.GetTableByName(ptTableName.T_Model);
                return m_ModelDt;
+           }
+       }
+       /// <summary>
+       /// 图层配置表
+       /// </summary>
+       private DataTable m_LayerConfigDt = null;
+       public DataTable LayerConfigDt
+       {
+           get {
+               m_LayerConfigDt = pConfig.GetTableByName(ptTableName.T_LayerConfig);
+               return m_LayerConfigDt;
+           }
+       }
+       /// <summary>
+       /// 编码规则表
+       /// </summary>
+       private DataTable m_CodeRuleDt = null;
+       public DataTable CodeRuleDt
+       {
+           get {
+               m_CodeRuleDt = pConfig.GetTableByName(ptTableName.T_CodeRule);
+               return m_CodeRuleDt;
            }
        }
     }

@@ -16,6 +16,14 @@ namespace ptRoadCodeConfig
        /// 模型编码
        /// </summary>
        public const string T_Model = "T_Model";
+       /// <summary>
+       /// 图层配置表
+       /// </summary>
+       public const string T_LayerConfig = "T_LayerConfig";
+       /// <summary>
+       /// 编码规则配置表
+       /// </summary>
+       public const string T_CodeRule = "T_CodeRule";
        #endregion
    }
 }
