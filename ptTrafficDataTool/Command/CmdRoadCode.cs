@@ -132,7 +132,7 @@ namespace ptTrafficDataTool.Command
         {
             if (m_MainMap != null)
             {
-                ptCodeTool.FrmRoadCode frm = new ptCodeTool.FrmRoadCode(m_MainMap);
+                ptCodeTool.FrmMain frm = new ptCodeTool.FrmMain(m_MainMap);
                 frm.Show();
             }
         }

@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ESRI.ArcGIS.Carto;
+using System.IO;
+using ptRoadCodeConfig;
+using ESRI.ArcGIS.Geodatabase;
 
 namespace ptCodeTool
 {
@@ -19,14 +22,9 @@ namespace ptCodeTool
         }
         private IMap m_MainMap;
         private CodeType m_RoadCodeType = CodeType.SzRoadCode;
-        /// <summary>
-        /// 读取图层配置信息
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-        }
+        private DataTable m_DtLayerConfig=null;
+        private DataTable m_DtCodeRule=null;
+
         /// <summary>
         /// 开始编码
         /// </summary>
@@ -36,17 +34,39 @@ namespace ptCodeTool
         {
             if (m_MainMap == null)
             {
-
+                RefreshLog(string.Format("无法获取地图文档"));
+                return;
             }
+            else if (m_MainMap.LayerCount <= 0)
+            {
+                RefreshLog(string.Format("当前地图未加载任何图层"));
+                return;
+            }
+            //读取配置信息
+            ReadDbConfig();
+            //根据编码类型获取相应的配置信息，并进行编码
+            if (m_DtCodeRule == null || m_DtLayerConfig == null) return;
+            string RowFilter = "";
             switch (m_RoadCodeType)
             {
                 case CodeType.SzRoadCode:
+                    RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType),CodeType.SzRoadCode));
                     break;
                 case CodeType.FsRoadCode:
+                    RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.FsRoadCode));
                     break;
                 case CodeType.FsFacilityCode:
+                    RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.FsRoadCode));
                     break;
             }
+            DataRow[] CodeLayers = m_DtCodeRule.Select(RowFilter);
+            if (CodeLayers.Length <= 0)
+            {
+                RefreshLog(string.Format("当前未配置编码图层"));
+            }
+            //查找编码图层
+
+
         }
         /// <summary>
         /// 关闭按钮
@@ -55,7 +75,7 @@ namespace ptCodeTool
         /// <param name="e"></param>
         private void btnCancle_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
         /// <summary>
         /// 保存日志
@@ -64,12 +84,97 @@ namespace ptCodeTool
         /// <param name="e"></param>
         private void btnSaveLog_Click(object sender, EventArgs e)
         {
-
+            SaveFileDialog saveLogDia = new SaveFileDialog();
+            saveLogDia.Filter = "*.txt|*.txt";
+            saveLogDia.FileName = "编码日志.txt";
+            if (saveLogDia.ShowDialog() != DialogResult.OK) return;
+            string saveFileName = saveLogDia.FileName;
+            if (System.IO.File.Exists(saveFileName))
+            {
+                if (MessageBox.Show("当前文件已存在，是否替换?", "提示", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        System.IO.File.Delete(saveFileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("删除日志文件失败:"+ex.Message,"提示",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else { return; }
+            }
+            //将日志文件保存到指定的目录
+            try
+            {
+                StreamWriter SW;
+                SW = File.CreateText(saveFileName);
+                SW.WriteLine(txtLog.Text);
+                SW.Close();
+                MessageBox.Show("成功保存日志", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("删除日志文件失败:" + ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private void RefreshLog(string Strmessage)
         {
-
+            if (string.IsNullOrEmpty(txtLog.Text))
+            {
+                txtLog.Text =string.Format("{0}",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss"))+ Strmessage;
+            }
+            else
+            {
+                txtLog.Text = txtLog.Text + System.Environment.NewLine + string.Format("{0}",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss")) + Strmessage;
+            }
+            this.txtLog.Refresh();
         }
+        /// <summary>
+        /// 读取配置信息
+        /// </summary>
+        private void ReadDbConfig()
+        {
+            //读取配置信息
+            RefreshLog(string.Format("读取图层配置信息"));
+            ptDataPool pDataPool = new ptDataPool();
+            m_DtLayerConfig = pDataPool.LayerConfigDt;
+            if (m_DtLayerConfig == null || m_DtLayerConfig.Rows.Count <= 0)
+            {
+                RefreshLog(string.Format("获取图层配置失败"));
+            }
+            m_DtCodeRule = pDataPool.CodeRuleDt;
+            if (m_DtCodeRule == null || m_DtCodeRule.Rows.Count <= 0)
+            {
+                RefreshLog(string.Format("获取编码规则失败"));
+            }
+        }
+        /// <summary>
+        /// 根据图层名称查找图层
+        /// </summary>
+        /// <param name="pLayerName"></param>
+        /// <returns></returns>
+        private IFeatureLayer GetLayerByName(string pLayerName)
+        {
+            IFeatureLayer pFeatureLayer = null;
+            for (int i = 0; i < m_MainMap.LayerCount; i++)
+            {
+                IFeatureLayer pLayer = m_MainMap.get_Layer(i) as IFeatureLayer;
+                if (pLayer !=null)
+                {
+                    IDataset pDs=pLayer.FeatureClass as IDataset;
+                    if (pDs != null && pDs.Name == pLayerName)
+                    {
+                        pFeatureLayer = pLayer;
+                        break;
+                    }
+                }
+            }
+            return pFeatureLayer;
+        }
+
         #region 设置编码类型
         private void rbSzRoadCode_CheckedChanged(object sender, EventArgs e)
         {
