@@ -31,12 +31,16 @@ namespace ptRoadCodeConfig
        public const string MaxCode = "MaxCode";
        #endregion
 
-       #region T_CodeRule
-       public const string CodeType = "CodeType";
-       public const string CodeLayer = "CodeLayer";
-       #endregion
-
-       public const string Shape_RoadLevel = "道路分级";
+        #region T_CodeRule
+           public const string CodeType = "CodeType";
+           public const string CodeLayer = "CodeLayer";
+        #endregion
+        #region
+        public const string LayerName = "LayerName";
+        public const string RoadType = "RoadType";
+        public const string CodeField = "CodeField";
+        #endregion
+        public const string Shape_RoadLevel = "道路分级";
        /// <summary>
        /// 行政区图层行政区代码字段名称
        /// </summary>

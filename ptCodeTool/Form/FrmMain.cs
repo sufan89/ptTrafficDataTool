@@ -24,7 +24,10 @@ namespace ptCodeTool
         private CodeType m_RoadCodeType = CodeType.SzRoadCode;
         private DataTable m_DtLayerConfig=null;
         private DataTable m_DtCodeRule=null;
-
+        /// <summary>
+        /// 编码图层
+        /// </summary>
+        private Dictionary<string, ptCodeFeautreLayer> m_CodeLayers = new Dictionary<string, ptCodeFeautreLayer>();
         /// <summary>
         /// 开始编码
         /// </summary>
@@ -65,7 +68,31 @@ namespace ptCodeTool
                 RefreshLog(string.Format("当前未配置编码图层"));
             }
             //查找编码图层
-
+            for (int i = 0; i < CodeLayers.Length; i++)
+            {
+                string StrLayerName = CodeLayers[i][ptColumnName.CodeLayer].ToString();
+                IFeatureLayer pTempLayer = GetLayerByName(StrLayerName);
+                if (pTempLayer != null)
+                {
+                    DataRow[] pTempRows = m_DtLayerConfig.Select(string.Format("{0}='{1}'",ptColumnName.LayerName, StrLayerName));
+                    if (pTempRows.Length <= 0)
+                    {
+                        RefreshLog(string.Format("未能加载图层:【{0}】相关配置信息", StrLayerName));
+                        return;
+                    }
+                    ptCodeFeautreLayer pptLayer = new ptCodeFeautreLayer();
+                    pptLayer.CodeLayer = pTempLayer;
+                    pptLayer.LayerName = StrLayerName;
+                    pptLayer.RoadType = pTempRows[0][ptColumnName.RoadType].ToString();
+                    pptLayer.CodeField = pTempRows[0][ptColumnName.CodeField].ToString();
+                    m_CodeLayers.Add(StrLayerName, pptLayer);
+                }
+                else
+                {
+                    RefreshLog(string.Format("当前地图未加载图层:{0}", StrLayerName));
+                    return;
+                }
+            }
 
         }
         /// <summary>
