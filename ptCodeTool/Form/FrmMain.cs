@@ -24,10 +24,7 @@ namespace ptCodeTool
         private CodeType m_RoadCodeType = CodeType.SzRoadCode;
         private DataTable m_DtLayerConfig=null;
         private DataTable m_DtCodeRule=null;
-        /// <summary>
-        /// 编码图层
-        /// </summary>
-        private Dictionary<string, ptCodeFeautreLayer> m_CodeLayers = new Dictionary<string, ptCodeFeautreLayer>();
+        private ptCodeTool.RefreshLogEventHandle RoadCodeLog;
         /// <summary>
         /// 开始编码
         /// </summary>
@@ -35,6 +32,9 @@ namespace ptCodeTool
         /// <param name="e"></param>
         private void btnDoCoding_Click(object sender, EventArgs e)
         {
+            //清空日志信息
+            txtLog.Text = string.Empty;
+
             if (m_MainMap == null)
             {
                 RefreshLog(string.Format("无法获取地图文档"));
@@ -67,6 +67,7 @@ namespace ptCodeTool
             {
                 RefreshLog(string.Format("当前未配置编码图层"));
             }
+            Dictionary<string, ptCodeFeautreLayer> pCodeLayers = new Dictionary<string, ptCodeFeautreLayer>();
             //查找编码图层
             for (int i = 0; i < CodeLayers.Length; i++)
             {
@@ -85,12 +86,24 @@ namespace ptCodeTool
                     pptLayer.LayerName = StrLayerName;
                     pptLayer.RoadType = pTempRows[0][ptColumnName.RoadType].ToString();
                     pptLayer.CodeField = pTempRows[0][ptColumnName.CodeField].ToString();
-                    m_CodeLayers.Add(StrLayerName, pptLayer);
+                    pCodeLayers.Add(StrLayerName, pptLayer);
                 }
                 else
                 {
                     RefreshLog(string.Format("当前地图未加载图层:{0}", StrLayerName));
                     return;
+                }
+            }
+
+            ptRoadCodeFactory RoadCodeFac = new ptRoadCodeFactory();
+            IRoadCode pRoadCode = RoadCodeFac.GetRoadCodeClass(m_RoadCodeType);
+            if (pRoadCode != null)
+            {
+             
+                if (RoadCodeLog == null)
+                {
+                    RoadCodeLog = RefreshLog;
+                    pRoadCode.Coding(pCodeLayers, RoadCodeLog);
                 }
             }
 
@@ -151,11 +164,11 @@ namespace ptCodeTool
         {
             if (string.IsNullOrEmpty(txtLog.Text))
             {
-                txtLog.Text =string.Format("{0}",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss"))+ Strmessage;
+                txtLog.Text =string.Format("{0}: ",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss"))+ Strmessage;
             }
             else
             {
-                txtLog.Text = txtLog.Text + System.Environment.NewLine + string.Format("{0}",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss")) + Strmessage;
+                txtLog.Text = txtLog.Text + System.Environment.NewLine + string.Format("{0}: ",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss")) + Strmessage;
             }
             this.txtLog.Refresh();
         }

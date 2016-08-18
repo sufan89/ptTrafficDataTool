@@ -123,9 +123,9 @@ namespace ptCodeTool
                 //    pRegionLayer = m_MainMap.get_Layer(i) as IFeatureLayer;
                 //}
             }
-            IRoadCode DoRoadCode = new RoadCode();
-            DoRoadCode.Coding(pRoadLayer);
-            MessageBox.Show("编码完成!");
+            //IRoadCode DoRoadCode = new RoadCode();
+            //DoRoadCode.Coding(pRoadLayer);
+            //MessageBox.Show("编码完成!");
             
         }
     }

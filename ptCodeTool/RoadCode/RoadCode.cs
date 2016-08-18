@@ -9,7 +9,7 @@ using ptRoadCodeConfig;
 
 namespace ptCodeTool
 {
-    class RoadCode:IRoadCode
+    class RoadCode
     {
         /// <summary>
         /// 佛山道路编码

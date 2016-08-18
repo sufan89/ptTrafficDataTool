@@ -118,7 +118,11 @@
     </Compile>
     <Compile Include="Interface\IRoadCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadCode\FsFacilityCode.cs" />
+    <Compile Include="RoadCode\FsRoadCode.cs" />
+    <Compile Include="RoadCode\ptRoadCodeFactory.cs" />
     <Compile Include="RoadCode\RoadCode.cs" />
+    <Compile Include="RoadCode\szRoadCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form\FrmMain.resx">
