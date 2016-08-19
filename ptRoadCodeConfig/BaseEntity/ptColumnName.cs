@@ -7,13 +7,14 @@ namespace ptRoadCodeConfig
 {
    public static class ptColumnName
    {
-       #region T_RegionConfig
+        #region T_RegionConfig
        public const string RegionCode = "RegionCode";
        public const string RegionName = "RegionName";
        public const string RoadRegion = "RoadRegion";
        public const string RegionLevel = "RegionLevel";
        #endregion
-       #region T_Model
+
+        #region T_Model
        public const string ModelName = "ModelName";
        public const string ModelCode = "ModelCode";
        public const string ModelType = "ModelType";
@@ -35,10 +36,12 @@ namespace ptRoadCodeConfig
            public const string CodeType = "CodeType";
            public const string CodeLayer = "CodeLayer";
         #endregion
-        #region
-        public const string LayerName = "LayerName";
-        public const string RoadType = "RoadType";
-        public const string CodeField = "CodeField";
+
+        #region T_LayerConfig
+            public const string LayerName = "LayerName";
+            public const string RoadType = "RoadType";
+            public const string CodeField = "CodeField";
+            public const string LevelField = "LevelField";
         #endregion
         public const string Shape_RoadLevel = "道路分级";
        /// <summary>
@@ -57,5 +60,13 @@ namespace ptRoadCodeConfig
        /// 深圳路网道路等级字段名称
        /// </summary>
        public const string Shape_RoadLevel_SZ = "道路等级";
+   }
+    /// <summary>
+    /// 模型类型
+    /// </summary>
+   public enum ModelType
+   {
+       RoadLevel=1, //道路等级类型
+       RoadFacility=2 //道路设施类型
    }
 }

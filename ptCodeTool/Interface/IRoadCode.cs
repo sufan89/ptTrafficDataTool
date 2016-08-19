@@ -12,6 +12,6 @@ namespace ptCodeTool
     {
         //void Coding(IFeatureLayer pRoadLayer,IFeatureLayer pRegionLayer);
         //void Coding(IFeatureLayer pRoadLayer);
-        void Coding(Dictionary<string, ptCodeFeautreLayer> dicCodeLayer,RefreshLogEventHandle RefreshLog);
+        void Coding(Dictionary<string, ptCodeFeautreLayer> dicCodeLayer);
     }
 }

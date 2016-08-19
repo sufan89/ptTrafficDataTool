@@ -45,66 +45,77 @@ namespace ptCodeTool
                 RefreshLog(string.Format("当前地图未加载任何图层"));
                 return;
             }
-            //读取配置信息
-            ReadDbConfig();
-            //根据编码类型获取相应的配置信息，并进行编码
-            if (m_DtCodeRule == null || m_DtLayerConfig == null) return;
-            string RowFilter = "";
-            switch (m_RoadCodeType)
+            try
             {
-                case CodeType.SzRoadCode:
-                    RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType),CodeType.SzRoadCode));
-                    break;
-                case CodeType.FsRoadCode:
-                    RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.FsRoadCode));
-                    break;
-                case CodeType.FsFacilityCode:
-                    RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.FsRoadCode));
-                    break;
-            }
-            DataRow[] CodeLayers = m_DtCodeRule.Select(RowFilter);
-            if (CodeLayers.Length <= 0)
-            {
-                RefreshLog(string.Format("当前未配置编码图层"));
-            }
-            Dictionary<string, ptCodeFeautreLayer> pCodeLayers = new Dictionary<string, ptCodeFeautreLayer>();
-            //查找编码图层
-            for (int i = 0; i < CodeLayers.Length; i++)
-            {
-                string StrLayerName = CodeLayers[i][ptColumnName.CodeLayer].ToString();
-                IFeatureLayer pTempLayer = GetLayerByName(StrLayerName);
-                if (pTempLayer != null)
+                //读取配置信息
+                ReadDbConfig();
+                //根据编码类型获取相应的配置信息，并进行编码
+                if (m_DtCodeRule == null || m_DtLayerConfig == null) return;
+                string RowFilter = "";
+                switch (m_RoadCodeType)
                 {
-                    DataRow[] pTempRows = m_DtLayerConfig.Select(string.Format("{0}='{1}'",ptColumnName.LayerName, StrLayerName));
-                    if (pTempRows.Length <= 0)
-                    {
-                        RefreshLog(string.Format("未能加载图层:【{0}】相关配置信息", StrLayerName));
-                        return;
-                    }
-                    ptCodeFeautreLayer pptLayer = new ptCodeFeautreLayer();
-                    pptLayer.CodeLayer = pTempLayer;
-                    pptLayer.LayerName = StrLayerName;
-                    pptLayer.RoadType = pTempRows[0][ptColumnName.RoadType].ToString();
-                    pptLayer.CodeField = pTempRows[0][ptColumnName.CodeField].ToString();
-                    pCodeLayers.Add(StrLayerName, pptLayer);
+                    case CodeType.SzRoadCode:
+                        RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.SzRoadCode));
+                        break;
+                    case CodeType.FsRoadCode:
+                        RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.FsRoadCode));
+                        break;
+                    case CodeType.FsFacilityCode:
+                        RowFilter = string.Format("{0}='{1}'", ptColumnName.CodeType, Enum.GetName(typeof(CodeType), CodeType.FsRoadCode));
+                        break;
                 }
-                else
+                DataRow[] CodeLayers = m_DtCodeRule.Select(RowFilter);
+                if (CodeLayers.Length <= 0)
                 {
-                    RefreshLog(string.Format("当前地图未加载图层:{0}", StrLayerName));
+                    RefreshLog(string.Format("当前未配置编码图层"));
                     return;
                 }
-            }
-
-            ptRoadCodeFactory RoadCodeFac = new ptRoadCodeFactory();
-            IRoadCode pRoadCode = RoadCodeFac.GetRoadCodeClass(m_RoadCodeType);
-            if (pRoadCode != null)
-            {
-             
-                if (RoadCodeLog == null)
+                Dictionary<string, ptCodeFeautreLayer> pCodeLayers = new Dictionary<string, ptCodeFeautreLayer>();
+                //查找编码图层
+                for (int i = 0; i < CodeLayers.Length; i++)
                 {
-                    RoadCodeLog = RefreshLog;
-                    pRoadCode.Coding(pCodeLayers, RoadCodeLog);
+                    string StrLayerName = CodeLayers[i][ptColumnName.CodeLayer].ToString();
+                    IFeatureLayer pTempLayer = GetLayerByName(StrLayerName);
+                    if (pTempLayer != null)
+                    {
+                        DataRow[] pTempRows = m_DtLayerConfig.Select(string.Format("{0}='{1}'", ptColumnName.LayerName, StrLayerName));
+                        if (pTempRows.Length <= 0)
+                        {
+                            RefreshLog(string.Format("未能加载图层:【{0}】相关配置信息", StrLayerName));
+                            return;
+                        }
+                        //判断配置的编码字段，是否存在于数据中
+                        if (pTempLayer.FeatureClass.FindField(pTempRows[0][ptColumnName.CodeField].ToString()) < 0)
+                        {
+                            RefreshLog(string.Format("未能在加载图层:【{0}】中找到配置的编码字段【{1}】", StrLayerName, pTempRows[0][ptColumnName.CodeField]));
+                            continue;
+                        }
+                        ptCodeFeautreLayer pptLayer = new ptCodeFeautreLayer();
+                        pptLayer.CodeLayer = pTempLayer;
+                        pptLayer.LayerName = StrLayerName;
+                        pptLayer.RoadType = pTempRows[0][ptColumnName.RoadType].ToString();
+                        pptLayer.CodeField = pTempRows[0][ptColumnName.CodeField].ToString();
+                        pptLayer.LayerConfigRow = pTempRows[0];
+                        pCodeLayers.Add(StrLayerName, pptLayer);
+                    }
+                    else
+                    {
+                        RefreshLog(string.Format("当前地图未加载图层:{0}", StrLayerName));
+                        return;
+                    }
                 }
+                if (RoadCodeLog == null) RoadCodeLog = RefreshLog;
+
+                ptRoadCodeFactory RoadCodeFac = new ptRoadCodeFactory(RoadCodeLog);
+                IRoadCode pRoadCode = RoadCodeFac.GetRoadCodeClass(m_RoadCodeType);
+                if (pRoadCode != null)
+                {
+                    pRoadCode.Coding(pCodeLayers);
+                }
+            }
+            catch (Exception ex)
+            {
+                RefreshLog(string.Format("编码失败:{0}", ex.Message));
             }
 
         }
@@ -166,9 +177,13 @@ namespace ptCodeTool
             {
                 txtLog.Text =string.Format("{0}: ",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss"))+ Strmessage;
             }
+            else if (!string.IsNullOrEmpty(Strmessage))
+            {
+                txtLog.Text = txtLog.Text + System.Environment.NewLine + string.Format("{0}: ", DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss")) + Strmessage;
+            }
             else
             {
-                txtLog.Text = txtLog.Text + System.Environment.NewLine + string.Format("{0}: ",DateTime.Now.ToString("yyyy-dd-MM HH:mm:ss")) + Strmessage;
+                txtLog.Text = txtLog.Text + System.Environment.NewLine + string.Format("***********************************************************");
             }
             this.txtLog.Refresh();
         }
@@ -179,16 +194,23 @@ namespace ptCodeTool
         {
             //读取配置信息
             RefreshLog(string.Format("读取图层配置信息"));
-            ptDataPool pDataPool = new ptDataPool();
-            m_DtLayerConfig = pDataPool.LayerConfigDt;
-            if (m_DtLayerConfig == null || m_DtLayerConfig.Rows.Count <= 0)
+            try
             {
-                RefreshLog(string.Format("获取图层配置失败"));
+                ptDataPool pDataPool = new ptDataPool();
+                m_DtLayerConfig = pDataPool.LayerConfigDt;
+                if (m_DtLayerConfig == null || m_DtLayerConfig.Rows.Count <= 0)
+                {
+                    RefreshLog(string.Format("获取图层配置失败"));
+                }
+                m_DtCodeRule = pDataPool.CodeRuleDt;
+                if (m_DtCodeRule == null || m_DtCodeRule.Rows.Count <= 0)
+                {
+                    RefreshLog(string.Format("获取编码规则失败"));
+                }
             }
-            m_DtCodeRule = pDataPool.CodeRuleDt;
-            if (m_DtCodeRule == null || m_DtCodeRule.Rows.Count <= 0)
+            catch (Exception ex)
             {
-                RefreshLog(string.Format("获取编码规则失败"));
+                RefreshLog(string.Format("读取配置信息失败:{0}",ex.Message));
             }
         }
         /// <summary>

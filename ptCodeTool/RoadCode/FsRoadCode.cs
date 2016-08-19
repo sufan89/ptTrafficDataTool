@@ -7,12 +7,16 @@ namespace ptCodeTool
 {
     class FsRoadCode :IRoadCode
     {
-        public void Coding(Dictionary<string, ptCodeFeautreLayer> dicCodeLayer)
+        public FsRoadCode(RefreshLogEventHandle RefreshLog)
         {
-            throw new NotImplementedException();
+            if (RefreshLog != null)
+            {
+                m_RefreshLog = RefreshLog;
+            }
         }
+        private RefreshLogEventHandle m_RefreshLog;
 
-        public void Coding(Dictionary<string, ptCodeFeautreLayer> dicCodeLayer, RefreshLogEventHandle RefreshLog)
+        public void Coding(Dictionary<string, ptCodeFeautreLayer> dicCodeLayer)
         {
             throw new NotImplementedException();
         }

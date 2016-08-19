@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ESRI.ArcGIS.Carto;
+using System.Data;
 
 namespace ptCodeTool
 {
@@ -48,6 +49,15 @@ namespace ptCodeTool
         {
             get { return m_CodeField; }
             set { m_CodeField = value; }
+        }
+        /// <summary>
+        /// 图层配置信息
+        /// </summary>
+        private DataRow m_LayerConfigRow;
+        public DataRow LayerConfigRow
+        {
+            get { return m_LayerConfigRow; }
+            set { m_LayerConfigRow = value; }
         }
     }
 }
