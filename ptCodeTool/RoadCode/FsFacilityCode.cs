@@ -15,10 +15,13 @@ namespace ptCodeTool
             }
         }
         private RefreshLogEventHandle m_RefreshLog;
-
+        /// <summary>
+        /// 佛山设施编码
+        /// </summary>
+        /// <param name="dicCodeLayer"></param>
         public void Coding(Dictionary<string, ptCodeFeautreLayer> dicCodeLayer)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

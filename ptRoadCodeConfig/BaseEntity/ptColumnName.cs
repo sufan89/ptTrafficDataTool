@@ -61,12 +61,5 @@ namespace ptRoadCodeConfig
        /// </summary>
        public const string Shape_RoadLevel_SZ = "道路等级";
    }
-    /// <summary>
-    /// 模型类型
-    /// </summary>
-   public enum ModelType
-   {
-       RoadLevel=1, //道路等级类型
-       RoadFacility=2 //道路设施类型
-   }
+
 }

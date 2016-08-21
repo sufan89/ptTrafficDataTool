@@ -261,13 +261,5 @@ namespace ptCodeTool
         }
         #endregion
     }
-    /// <summary>
-    /// 编码类型
-    /// </summary>
-    public enum CodeType
-    {
-          SzRoadCode=1,
-          FsRoadCode=2,
-          FsFacilityCode=3
-    }
+
 }
