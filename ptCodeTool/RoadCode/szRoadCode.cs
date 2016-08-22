@@ -39,6 +39,7 @@ namespace ptCodeTool
                     m_RefreshLog(string.Empty);
 
                     m_RefreshLog(string.Format("开始对图层【{0}】进行编码", layername));
+
                     ptCodeFeautreLayer ptCodeRoadLayer = dicCodeLayer[layername];
                     IFeatureLayer pRoadLayer = ptCodeRoadLayer.CodeLayer;
                     //根据配置信息来获取图层要素进行编码

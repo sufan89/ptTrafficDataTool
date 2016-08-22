@@ -117,6 +117,7 @@ namespace ptCodeTool
  
             }
         }
+
         private string GetReigonCode(string StrRegionField)
         {
             string StrRegionCode = "";
